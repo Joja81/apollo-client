@@ -1126,14 +1126,17 @@ describe("client.watchQuery", () => {
     const stream = new ObservableStream(observable);
 
     {
-      const { data } = await stream.takeNext();
-      data!.currentUser.__typename;
-      data!.currentUser.id;
-      data!.currentUser.name;
+      const { data, dataState } = await stream.takeNext();
+
+      invariant(dataState === "complete", "expected dataState to be complete");
+
+      data.currentUser.__typename;
+      data.currentUser.id;
+      data.currentUser.name;
 
       expect(consoleSpy.warn).not.toHaveBeenCalled();
 
-      data!.currentUser.age;
+      data.currentUser.age;
 
       expect(consoleSpy.warn).toHaveBeenCalledTimes(1);
       expect(consoleSpy.warn).toHaveBeenCalledWith(
@@ -1207,9 +1210,11 @@ describe("client.watchQuery", () => {
     const observable = client.watchQuery({ query });
     const stream = new ObservableStream(observable);
 
-    const { data } = await stream.takeNext();
+    const { data, dataState } = await stream.takeNext();
 
-    const id = client.cache.identify(data!.currentUser);
+    invariant(dataState === "complete", "expected dataState to be complete");
+
+    const id = client.cache.identify(data.currentUser);
 
     expect(consoleSpy.warn).not.toHaveBeenCalled();
     expect(id).toEqual("User:1");
@@ -1270,10 +1275,13 @@ describe("client.watchQuery", () => {
 
     const queryStream = new ObservableStream(client.watchQuery({ query }));
 
-    const { data } = await queryStream.takeNext();
+    const { data, dataState } = await queryStream.takeNext();
+
+    invariant(dataState === "complete", "expected dataState to be complete");
+
     const fragmentObservable = client.watchFragment({
       fragment,
-      from: data!.currentUser,
+      from: data.currentUser,
     });
 
     const fragmentStream = new ObservableStream(fragmentObservable);
@@ -1343,10 +1351,13 @@ describe("client.watchQuery", () => {
 
     const queryStream = new ObservableStream(client.watchQuery({ query }));
 
-    const { data } = await queryStream.takeNext();
+    const { data, dataState } = await queryStream.takeNext();
+
+    invariant(dataState === "complete", "expected dataState to be complete");
+
     const fragmentObservable = client.watchFragment({
       fragment,
-      from: data!.currentUser,
+      from: data.currentUser,
     });
 
     expect(console.warn).toHaveBeenCalledTimes(1);
@@ -1420,10 +1431,13 @@ describe("client.watchQuery", () => {
 
     const queryStream = new ObservableStream(client.watchQuery({ query }));
 
-    const { data } = await queryStream.takeNext();
+    const { data, dataState } = await queryStream.takeNext();
+
+    invariant(dataState === "complete", "expected dataState to be complete");
+
     const fragmentObservable = client.watchFragment({
       fragment,
-      from: data!.currentUser,
+      from: data.currentUser,
     });
 
     expect(console.warn).toHaveBeenCalledTimes(1);
