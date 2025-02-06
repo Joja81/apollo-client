@@ -1269,7 +1269,7 @@ export class QueryManager<TStore> {
         };
 
         if (isExecutionPatchResult(result) && result.hasNext) {
-          aqr.dataState = "hasNext" as any;
+          aqr.dataState = "hasNext";
         }
 
         // In the case we start multiple network requests simulatenously, we
@@ -1278,7 +1278,7 @@ export class QueryManager<TStore> {
         // throwing the markError result.
         if (hasErrors && errorPolicy === "none") {
           aqr.data = void 0 as TData;
-          aqr.dataState = "none" as any;
+          aqr.dataState = "none";
         }
 
         if (hasErrors && errorPolicy !== "ignore") {
