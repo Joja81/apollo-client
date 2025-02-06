@@ -1262,10 +1262,15 @@ export class QueryManager<TStore> {
 
         const aqr: ApolloQueryResult<TData> = {
           data: result.data,
+          dataState: "complete",
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: !result.data,
         };
+
+        if (isExecutionPatchResult(result) && result.hasNext) {
+          aqr.dataState = "hasNext" as any;
+        }
 
         // In the case we start multiple network requests simulatenously, we
         // want to ensure we properly set `data` if we're reporting on an old
@@ -1273,6 +1278,7 @@ export class QueryManager<TStore> {
         // throwing the markError result.
         if (hasErrors && errorPolicy === "none") {
           aqr.data = void 0 as TData;
+          aqr.dataState = "none" as any;
         }
 
         if (hasErrors && errorPolicy !== "ignore") {
