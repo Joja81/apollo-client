@@ -3735,7 +3735,7 @@ describe("ObservableQuery", () => {
 
     const stream = new ObservableStream(mapped);
 
-    await expect(stream).toEmitApolloQueryResult({
+    await expect(stream).toEmitValue({
       loading: false,
       networkStatus: NetworkStatus.ready,
       data: { mapped: true },
