@@ -490,6 +490,7 @@ describe("useLazyQuery Hook", () => {
 
     expect(refetchResult).toEqualApolloQueryResult({
       data: { counter: 2, vars: { execVar: false } },
+      dataState: "complete",
       loading: false,
       networkStatus: NetworkStatus.ready,
       partial: false,
