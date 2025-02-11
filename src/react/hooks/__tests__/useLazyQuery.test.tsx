@@ -992,7 +992,7 @@ describe("useLazyQuery Hook", () => {
     expect(takeSnapshot).not.toRerender();
   });
 
-  it.skip("should persist previous data when a query is re-run and variable changes", async () => {
+  it("should persist previous data when a query is re-run and variable changes", async () => {
     const CAR_QUERY_BY_ID = gql`
       query ($id: Int) {
         car(id: $id) {
@@ -1044,7 +1044,6 @@ describe("useLazyQuery Hook", () => {
 
       expect(result).toEqualLazyQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,

@@ -356,6 +356,7 @@ export function useLazyQuery<
   const execute = React.useCallback<LazyQueryExecFunction<TData, TVariables>>(
     (executeOptions) => {
       const previousQuery = observable.options.query;
+      const previousVariables = observable.variables;
 
       const promise = observable.reobserve({
         ...executeOptions,
@@ -363,7 +364,14 @@ export function useLazyQuery<
         fetchPolicy,
       });
 
-      if (!equal(previousQuery, query)) {
+      if (
+        !equal(
+          { query: previousQuery, variables: previousVariables },
+          // TODO: Remove fallback on empty object when variables returns
+          // undefined
+          { query, variables: executeOptions?.variables ?? {} }
+        )
+      ) {
         updateResult({ ...observable.getCurrentResult(), data: undefined });
         forceUpdateState();
       }
