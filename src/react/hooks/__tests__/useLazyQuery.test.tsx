@@ -10,6 +10,7 @@ import {
   ErrorPolicy,
   InMemoryCache,
   NetworkStatus,
+  ObservableQuery,
   RefetchWritePolicy,
   TypedDocumentNode,
   WatchQueryFetchPolicy,
@@ -80,6 +81,7 @@ describe("useLazyQuery Hook", () => {
         previousData: undefined,
         variables: {},
       });
+      expect(result.observable).toBeUndefined();
     }
 
     const [execute] = getCurrentSnapshot();
@@ -105,6 +107,7 @@ describe("useLazyQuery Hook", () => {
         previousData: undefined,
         variables: {},
       });
+      expect(result.observable).toBeInstanceOf(ObservableQuery);
     }
 
     {
