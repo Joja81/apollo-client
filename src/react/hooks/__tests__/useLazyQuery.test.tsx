@@ -177,7 +177,7 @@ describe("useLazyQuery Hook", () => {
     }
   });
 
-  it.skip("should use variables passed to execute function when running the lazy execution function", async () => {
+  it("should use variables passed to execute function when running the lazy execution function", async () => {
     const query = gql`
       query ($id: number) {
         hello(id: $id)
@@ -205,7 +205,6 @@ describe("useLazyQuery Hook", () => {
 
       expect(result).toEqualLazyQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
