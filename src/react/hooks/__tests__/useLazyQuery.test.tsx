@@ -78,9 +78,8 @@ describe("useLazyQuery Hook", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: undefined,
+        variables: {},
       });
-      expect(result.observable).toBeUndefined();
     }
 
     const [execute] = getCurrentSnapshot();
@@ -107,7 +106,6 @@ describe("useLazyQuery Hook", () => {
         previousData: undefined,
         variables: {},
       });
-      expect(result.observable).toBeInstanceOf(ObservableQuery);
     }
 
     {
