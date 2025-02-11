@@ -13,13 +13,7 @@ import type {
   WatchQueryOptions,
 } from "../../core/index.js";
 import { mergeOptions } from "../../utilities/index.js";
-import type {
-  LazyQueryExecFunction,
-  LazyQueryResultTuple,
-  NoInfer,
-  QueryHookOptions,
-  QueryResult,
-} from "../types/types.js";
+import type { NoInfer, QueryHookOptions, QueryResult } from "../types/types.js";
 import type { InternalResult, ObsQueryWithMeta } from "./useQuery.js";
 import {
   createMakeWatchQueryOptions,
