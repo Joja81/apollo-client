@@ -36,7 +36,6 @@ import { MockedProvider } from "../../../testing/react";
 import {
   setupSimpleCase,
   setupVariablesCase,
-  spyOnConsole,
   VariablesCaseVariables,
 } from "../../../testing/internal";
 
