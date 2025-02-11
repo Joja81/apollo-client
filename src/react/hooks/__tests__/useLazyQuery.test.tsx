@@ -3808,7 +3808,7 @@ test("applies `errorPolicy` on next fetch when it changes between renders", asyn
   await expect(takeSnapshot).not.toRerender();
 });
 
-test.only("applies `context` on next fetch when it changes between renders", async () => {
+test("applies `context` on next fetch when it changes between renders", async () => {
   const query = gql`
     query {
       context
@@ -3929,6 +3929,37 @@ test.only("applies `context` on next fetch when it changes between renders", asy
     });
   }
 
+  await rerender({ context: { source: "rerenderForRefetch" } });
+
+  {
+    const [, result] = await takeSnapshot();
+
+    expect(result).toEqualLazyQueryResult({
+      data: { context: { source: "rerender" } },
+      called: true,
+      loading: false,
+      networkStatus: NetworkStatus.ready,
+      previousData: { context: { source: "initialHookValue" } },
+      variables: {},
+    });
+  }
+
+  // Ensure context isn't just applied to execute function
+  void getCurrentSnapshot()[1].refetch();
+
+  {
+    const [, result] = await takeSnapshot();
+
+    expect(result).toEqualLazyQueryResult({
+      data: { context: { source: "rerenderForRefetch" } },
+      called: true,
+      loading: false,
+      networkStatus: NetworkStatus.ready,
+      previousData: { context: { source: "rerender" } },
+      variables: {},
+    });
+  }
+
   await expect(
     execute({ context: { source: "execute" } })
   ).resolves.toEqualLazyQueryResult({
@@ -3936,7 +3967,7 @@ test.only("applies `context` on next fetch when it changes between renders", asy
     called: true,
     loading: false,
     networkStatus: NetworkStatus.ready,
-    previousData: { context: { source: "rerender" } },
+    previousData: { context: { source: "rerenderForRefetch" } },
     variables: {},
   });
 
@@ -3948,7 +3979,7 @@ test.only("applies `context` on next fetch when it changes between renders", asy
       called: true,
       loading: false,
       networkStatus: NetworkStatus.ready,
-      previousData: { context: { source: "rerender" } },
+      previousData: { context: { source: "rerenderForRefetch" } },
       variables: {},
     });
   }
