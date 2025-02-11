@@ -1397,7 +1397,6 @@ describe("useLazyQuery Hook", () => {
 
       expect(result).toEqualLazyQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
@@ -1406,7 +1405,16 @@ describe("useLazyQuery Hook", () => {
       });
     }
 
-    const executePromise = Promise.resolve().then(() => execute());
+    await expect(execute()).resolves.toEqualLazyQueryResult({
+      data: undefined,
+      called: true,
+      loading: false,
+      networkStatus: NetworkStatus.error,
+      previousData: undefined,
+      error: new ApolloError({ graphQLErrors: [{ message: "error 1" }] }),
+      errors: [{ message: "error 1" }],
+      variables: {},
+    });
 
     {
       const [, result] = await takeSnapshot();
@@ -1435,18 +1443,15 @@ describe("useLazyQuery Hook", () => {
       });
     }
 
-    await expect(executePromise).resolves.toEqualLazyQueryResult({
+    await expect(execute()).resolves.toEqualLazyQueryResult({
       data: undefined,
       called: true,
       loading: false,
       networkStatus: NetworkStatus.error,
       previousData: undefined,
-      error: new ApolloError({ graphQLErrors: [{ message: "error 1" }] }),
-      errors: [{ message: "error 1" }],
+      error: new ApolloError({ graphQLErrors: [{ message: "error 2" }] }),
       variables: {},
     });
-
-    void execute();
 
     {
       const [, result] = await takeSnapshot();
