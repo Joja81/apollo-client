@@ -1,4 +1,4 @@
-import type { DocumentNode } from "graphql";
+import type { DocumentNode, GraphQLFormattedError } from "graphql";
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import * as React from "rehackt";
 
@@ -26,7 +26,6 @@ import type {
   NoInfer,
   ObservableQueryFields,
   QueryHookOptions,
-  QueryResult,
 } from "../types/types.js";
 import { useIsomorphicLayoutEffect } from "./internal/useIsomorphicLayoutEffect.js";
 import { NextFetchPolicyContext } from "../../core/watchQueryOptions.js";
@@ -44,7 +43,7 @@ const {
 } = Object;
 
 type InternalQueryResult<TData, TVariables extends OperationVariables> = Omit<
-  QueryResult<TData, TVariables>,
+  LazyQueryResult<TData, TVariables>,
   Exclude<keyof ObservableQueryFields<TData, TVariables>, "variables">
 >;
 
@@ -124,12 +123,37 @@ export interface LazyQueryHookExecOptions<
   context?: DefaultContext;
 }
 
+export interface LazyQueryResult<TData, TVariables extends OperationVariables>
+  extends ObservableQueryFields<TData, TVariables> {
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#client:member} */
+  client: ApolloClient<any>;
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#observable:member} */
+  observable: ObservableQuery<TData, TVariables>;
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#data:member} */
+  data: MaybeMasked<TData> | undefined;
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#previousData:member} */
+  previousData?: MaybeMasked<TData>;
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#error:member} */
+  error?: ApolloError;
+  /**
+   * @deprecated This property will be removed in a future version of Apollo Client.
+   * Please use `error.graphQLErrors` instead.
+   */
+  errors?: ReadonlyArray<GraphQLFormattedError>;
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#loading:member} */
+  loading: boolean;
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#networkStatus:member} */
+  networkStatus: NetworkStatus;
+  /** {@inheritDoc @apollo/client!QueryResultDocumentation#called:member} */
+  called: boolean;
+}
+
 export type LazyQueryResultTuple<
   TData,
   TVariables extends OperationVariables,
 > = [
   execute: LazyQueryExecFunction<TData, TVariables>,
-  result: QueryResult<TData, TVariables>,
+  result: LazyQueryResult<TData, TVariables>,
 ];
 
 export type LazyQueryExecFunction<
@@ -137,7 +161,7 @@ export type LazyQueryExecFunction<
   TVariables extends OperationVariables,
 > = (
   options?: LazyQueryHookExecOptions<TVariables>
-) => Promise<QueryResult<TData, TVariables>>;
+) => Promise<LazyQueryResult<TData, TVariables>>;
 
 // The following methods, when called will execute the query, regardless of
 // whether the useLazyQuery execute function was called before.
@@ -326,7 +350,7 @@ function executeQuery<TData, TVariables extends OperationVariables>(
   onQueryExecuted(watchQueryOptions);
 
   return new Promise<
-    Omit<QueryResult<TData, TVariables>, (typeof EAGER_METHODS)[number]>
+    Omit<LazyQueryResult<TData, TVariables>, (typeof EAGER_METHODS)[number]>
   >((resolve) => {
     let result: ApolloQueryResult<TData>;
 
