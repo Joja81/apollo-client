@@ -2656,7 +2656,7 @@ describe("useLazyQuery Hook", () => {
       }
     });
 
-    it.skip("does not mask queries when dataMasking is `false`", async () => {
+    it("does not mask queries when dataMasking is `false`", async () => {
       type UserFieldsFragment = {
         __typename: "User";
         age: number;
@@ -2764,7 +2764,7 @@ describe("useLazyQuery Hook", () => {
       }
     });
 
-    it.skip("does not mask queries by default", async () => {
+    it("does not mask queries by default", async () => {
       type UserFieldsFragment = {
         __typename: "User";
         age: number;
@@ -2871,7 +2871,7 @@ describe("useLazyQuery Hook", () => {
       }
     });
 
-    it.skip("masks queries updated by the cache", async () => {
+    it("masks queries updated by the cache", async () => {
       type UserFieldsFragment = {
         __typename: "User";
         age: number;
@@ -2992,7 +2992,7 @@ describe("useLazyQuery Hook", () => {
       }
     });
 
-    it.skip("does not rerender when updating field in named fragment", async () => {
+    it("does not rerender when updating field in named fragment", async () => {
       type UserFieldsFragment = {
         __typename: "User";
         age: number;
