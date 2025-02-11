@@ -340,7 +340,7 @@ export function useLazyQuery<
       ...observableResult,
       client,
       previousData: previousDataRef.current,
-      variables: observable?.variables,
+      variables: observable.variables,
       observable,
       called: !!resultRef.current,
     }),
