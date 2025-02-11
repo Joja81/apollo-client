@@ -1129,7 +1129,7 @@ describe("useLazyQuery Hook", () => {
     }
   });
 
-  it.skip("should work with cache-and-network fetch policy", async () => {
+  it("should work with cache-and-network fetch policy", async () => {
     const cache = new InMemoryCache();
     const link = mockSingleLink({
       request: { query: helloQuery },
@@ -1160,7 +1160,6 @@ describe("useLazyQuery Hook", () => {
 
       expect(result).toEqualLazyQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
@@ -1184,7 +1183,6 @@ describe("useLazyQuery Hook", () => {
       const [, result] = await takeSnapshot();
 
       expect(result).toEqualLazyQueryResult({
-        // TODO: FIXME
         data: { hello: "from cache" },
         called: true,
         loading: true,
