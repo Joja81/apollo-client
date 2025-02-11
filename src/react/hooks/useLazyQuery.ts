@@ -373,7 +373,7 @@ export function useLazyQuery<
         ...execOptionsRef.current,
       });
 
-      const currentObservable = getObservable(client, observable, options);
+      const currentObservable = observable || client.watchQuery(options);
 
       if (!observable) {
         setObservable(currentObservable);
@@ -416,19 +416,6 @@ export function useLazyQuery<
     []
   );
   return [stableExecute, result];
-}
-
-function getObservable(
-  client: ApolloClient<any>,
-  currentObservable: ObservableQuery<any, any> | undefined,
-  options: WatchQueryOptions<any, any>
-) {
-  if (currentObservable) {
-    currentObservable.silentSetOptions(options);
-    return currentObservable;
-  }
-
-  return client.watchQuery(options);
 }
 
 function executeQuery<TData, TVariables extends OperationVariables>(
