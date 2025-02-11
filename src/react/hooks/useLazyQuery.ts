@@ -422,6 +422,7 @@ export function useLazyQuery<
       // rerendering in React 17. Without this, the `variables` value is returned
       // with the previous set of variables.
       if (
+        !resultRef.current ||
         dirtyRef.current ||
         !equal(
           { query: previousQuery, variables: previousVariables },
@@ -431,11 +432,6 @@ export function useLazyQuery<
         )
       ) {
         dirtyRef.current = false;
-        updateResult(observable.getCurrentResult());
-        forceUpdateState();
-      }
-
-      if (!resultRef.current) {
         updateResult(observable.getCurrentResult());
         forceUpdateState();
       }
