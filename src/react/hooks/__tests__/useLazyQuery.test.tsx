@@ -1506,7 +1506,7 @@ describe("useLazyQuery Hook", () => {
     await wait(50);
   });
 
-  it.skip("allows in-flight requests to resolve when component unmounts", async () => {
+  it("allows in-flight requests to resolve when component unmounts", async () => {
     const link = new MockSubscriptionLink();
     const client = new ApolloClient({ link, cache: new InMemoryCache() });
 
@@ -1699,7 +1699,7 @@ describe("useLazyQuery Hook", () => {
   });
 
   // https://github.com/apollographql/apollo-client/issues/10198
-  it.skip("uses the most recent query document when the hook rerenders before execution", async () => {
+  it("uses the most recent query document when the hook rerenders before execution", async () => {
     const query = gql`
       query DummyQuery {
         shouldNotBeUsed
@@ -1728,7 +1728,6 @@ describe("useLazyQuery Hook", () => {
 
       expect(result).toEqualLazyQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
@@ -1744,7 +1743,6 @@ describe("useLazyQuery Hook", () => {
 
       expect(result).toEqualLazyQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
@@ -1791,7 +1789,7 @@ describe("useLazyQuery Hook", () => {
     }
   });
 
-  it.skip("does not refetch when rerendering after executing query", async () => {
+  it("does not refetch when rerendering after executing query", async () => {
     interface Data {
       user: { id: string; name: string };
     }
