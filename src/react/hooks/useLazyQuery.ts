@@ -73,9 +73,6 @@ export interface LazyQueryHookOptions<
 
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#context:member} */
   context?: DefaultContext;
-
-  /** @internal */
-  defaultOptions?: Partial<WatchQueryOptions<TVariables, TData>>;
 }
 
 export interface LazyQueryHookExecOptions<
@@ -129,9 +126,6 @@ export interface LazyQueryHookExecOptions<
 
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#context:member} */
   context?: DefaultContext;
-
-  /** @internal */
-  defaultOptions?: Partial<WatchQueryOptions<TVariables, TData>>;
 
   query?: DocumentNode | TypedDocumentNode<TData, TVariables>;
 }
