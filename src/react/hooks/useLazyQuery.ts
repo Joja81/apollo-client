@@ -387,6 +387,7 @@ export function useLazyQuery<
     observable.silentSetOptions({
       errorPolicy: stableOptions?.errorPolicy,
       context: stableOptions?.context,
+      refetchWritePolicy: stableOptions?.refetchWritePolicy,
     });
   }, [observable, stableOptions]);
 
