@@ -161,7 +161,7 @@ describe("useLazyQuery Hook", () => {
     }
   });
 
-  it("should use variables defined in hook options (if any), when running the lazy execution function", async () => {
+  it("should use variables passed to execute function when running the lazy execution function", async () => {
     const query = gql`
       query ($id: number) {
         hello(id: $id)
@@ -178,17 +178,11 @@ describe("useLazyQuery Hook", () => {
 
     using _disabledAct = disableActEnvironment();
     const { takeSnapshot, getCurrentSnapshot } =
-      await renderHookToSnapshotStream(
-        () =>
-          useLazyQuery(query, {
-            variables: { id: 1 },
-          }),
-        {
-          wrapper: ({ children }) => (
-            <MockedProvider mocks={mocks}>{children}</MockedProvider>
-          ),
-        }
-      );
+      await renderHookToSnapshotStream(() => useLazyQuery(query), {
+        wrapper: ({ children }) => (
+          <MockedProvider mocks={mocks}>{children}</MockedProvider>
+        ),
+      });
 
     {
       const [, result] = await takeSnapshot();
@@ -200,12 +194,12 @@ describe("useLazyQuery Hook", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: { id: 1 },
+        variables: {},
       });
     }
 
     const execute = getCurrentSnapshot()[0];
-    setTimeout(() => execute());
+    setTimeout(() => execute({ variables: { id: 1 } }));
 
     {
       const [, result] = await takeSnapshot();
