@@ -649,7 +649,7 @@ describe("useLazyQuery Hook", () => {
       const [, result] = await takeSnapshot();
 
       expect(result).toEqualLazyQueryResult({
-        data: undefined,
+        data: { hello: "world" },
         called: true,
         loading: true,
         networkStatus: NetworkStatus.loading,

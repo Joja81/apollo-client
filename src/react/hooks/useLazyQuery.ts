@@ -431,12 +431,7 @@ export function useLazyQuery<
         )
       ) {
         dirtyRef.current = false;
-        const currentResult = observable.getCurrentResult();
-        updateResult({
-          ...currentResult,
-          data:
-            stableOptions?.returnPartialData ? currentResult.data : undefined,
-        });
+        updateResult(observable.getCurrentResult());
         forceUpdateState();
       }
 
