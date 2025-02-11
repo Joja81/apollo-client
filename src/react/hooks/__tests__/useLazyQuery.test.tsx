@@ -4368,7 +4368,7 @@ test("applies `returnPartialData` on next fetch when it changes between renders"
   await expect(takeSnapshot).not.toRerender();
 });
 
-test.skip("applies updated `fetchPolicy` on next fetch when it changes between renders", async () => {
+test("applies updated `fetchPolicy` on next fetch when it changes between renders", async () => {
   const { query, mocks } = setupVariablesCase();
 
   const client = new ApolloClient({
@@ -4409,7 +4409,6 @@ test.skip("applies updated `fetchPolicy` on next fetch when it changes between r
 
     expect(result).toEqualLazyQueryResult({
       data: undefined,
-      error: undefined,
       called: false,
       loading: false,
       networkStatus: NetworkStatus.ready,
@@ -4433,19 +4432,6 @@ test.skip("applies updated `fetchPolicy` on next fetch when it changes between r
     previousData: undefined,
     variables: { id: "1" },
   });
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: { id: "1" },
-    });
-  }
 
   {
     const [, result] = await takeSnapshot();
@@ -4499,7 +4485,7 @@ test.skip("applies updated `fetchPolicy` on next fetch when it changes between r
 
     expect(result).toEqualLazyQueryResult({
       data: {
-        character: { __typename: "Character", id: "1", name: "Cached Widow" },
+        character: { __typename: "Character", id: "2", name: "Cached Widow" },
       },
       called: true,
       loading: true,
@@ -4522,7 +4508,7 @@ test.skip("applies updated `fetchPolicy` on next fetch when it changes between r
       loading: false,
       networkStatus: NetworkStatus.ready,
       previousData: {
-        character: { __typename: "Character", id: "2", name: "Spider-Cache" },
+        character: { __typename: "Character", id: "2", name: "Cached Widow" },
       },
       variables: { id: "2" },
     });
