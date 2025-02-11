@@ -255,7 +255,7 @@ export function useLazyQuery<
     [useQueryResult, eagerMethods, called]
   );
 
-  const execute = React.useCallback<LazyQueryResultTuple<TData, TVariables>[0]>(
+  const execute = React.useCallback<LazyQueryExecFunction<TData, TVariables>>(
     (executeOptions) => {
       execOptionsRef.current = executeOptions ? executeOptions : {};
 
