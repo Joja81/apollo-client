@@ -65,12 +65,12 @@ type InternalQueryResult<TData, TVariables extends OperationVariables> = Omit<
 
 const lastWatchOptions = Symbol();
 
-export interface ObsQueryWithMeta<TData, TVariables extends OperationVariables>
+interface ObsQueryWithMeta<TData, TVariables extends OperationVariables>
   extends ObservableQuery<TData, TVariables> {
   [lastWatchOptions]?: WatchQueryOptions<TVariables, TData>;
 }
 
-export interface InternalResult<TData, TVariables extends OperationVariables> {
+interface InternalResult<TData, TVariables extends OperationVariables> {
   // These members are populated by getCurrentResult and setResult, and it's
   // okay/normal for them to be initially undefined.
   current?: undefined | InternalQueryResult<TData, TVariables>;
@@ -230,7 +230,7 @@ function useInternalState<
   return [internalState, onQueryExecuted] as const;
 }
 
-export function useQueryInternals<
+function useQueryInternals<
   TData = any,
   TVariables extends OperationVariables = OperationVariables,
 >(
@@ -490,7 +490,7 @@ function useResubscribeIfNecessary<
  * This is two-step curried because we want to reuse the `make` function,
  * but the `observable` might differ between calls to `make`.
  */
-export function createMakeWatchQueryOptions<
+function createMakeWatchQueryOptions<
   TData = any,
   TVariables extends OperationVariables = OperationVariables,
 >(
@@ -548,10 +548,7 @@ export function createMakeWatchQueryOptions<
   };
 }
 
-export function getObsQueryOptions<
-  TData,
-  TVariables extends OperationVariables,
->(
+function getObsQueryOptions<TData, TVariables extends OperationVariables>(
   observable: ObservableQuery<TData, TVariables> | undefined,
   client: ApolloClient<object>,
   queryHookOptions: QueryHookOptions<TData, TVariables>,
@@ -632,10 +629,7 @@ function getCurrentResult<TData, TVariables extends OperationVariables>(
   return resultData.current!;
 }
 
-export function getDefaultFetchPolicy<
-  TData,
-  TVariables extends OperationVariables,
->(
+function getDefaultFetchPolicy<TData, TVariables extends OperationVariables>(
   queryHookDefaultOptions?: Partial<WatchQueryOptions<TVariables, TData>>,
   clientDefaultOptions?: DefaultOptions
 ): WatchQueryFetchPolicy {
@@ -654,7 +648,7 @@ export function toApolloError<TData>(
     : result.error;
 }
 
-export function toQueryResult<TData, TVariables extends OperationVariables>(
+function toQueryResult<TData, TVariables extends OperationVariables>(
   result: ApolloQueryResult<MaybeMasked<TData>>,
   previousData: MaybeMasked<TData> | undefined,
   observable: ObservableQuery<TData, TVariables>,
