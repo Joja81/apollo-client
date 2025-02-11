@@ -389,7 +389,7 @@ export function useLazyQuery<
       const previousQuery = observable.options.query;
       const previousVariables = observable.variables;
 
-      const promise = observable.reobserve({
+      const concast = observable.reobserveAsConcast({
         ...executeOptions,
         query,
         fetchPolicy,
@@ -415,17 +415,33 @@ export function useLazyQuery<
         forceUpdateState();
       }
 
-      const queryResult = await promise;
+      return new Promise<LazyQueryResult<TData, TVariables>>(
+        (resolve, reject) => {
+          let result: ApolloQueryResult<TData>;
 
-      return {
-        ...queryResult,
-        ...eagerMethods,
-        client,
-        observable,
-        called: true,
-        previousData: previousDataRef.current,
-        variables: observable.variables,
-      };
+          // Subscribe to the concast independently of the ObservableQuery in case
+          // the component gets unmounted before the promise resolves. This prevents
+          // the concast from terminating early and resolving with `undefined` when
+          // there are no more subscribers for the concast.
+          concast.subscribe({
+            next(value) {
+              result = value;
+            },
+            complete() {
+              resolve({
+                ...result,
+                ...eagerMethods,
+                client,
+                observable,
+                called: true,
+                previousData: previousDataRef.current,
+                variables: observable.variables,
+              });
+            },
+            error: reject,
+          });
+        }
+      );
     },
     [query, eagerMethods, fetchPolicy, observable]
   );
