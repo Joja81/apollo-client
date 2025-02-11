@@ -388,6 +388,7 @@ export function useLazyQuery<
       errorPolicy: stableOptions?.errorPolicy,
       context: stableOptions?.context,
       refetchWritePolicy: stableOptions?.refetchWritePolicy,
+      returnPartialData: stableOptions?.returnPartialData,
     });
   }, [observable, stableOptions]);
 
@@ -430,7 +431,12 @@ export function useLazyQuery<
         )
       ) {
         dirtyRef.current = false;
-        updateResult({ ...observable.getCurrentResult(), data: undefined });
+        const currentResult = observable.getCurrentResult();
+        updateResult({
+          ...currentResult,
+          data:
+            stableOptions?.returnPartialData ? currentResult.data : undefined,
+        });
         forceUpdateState();
       }
 
