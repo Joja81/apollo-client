@@ -40,9 +40,6 @@ export interface LazyQueryHookOptions<
         context: NextFetchPolicyContext<TData, TVariables>
       ) => WatchQueryFetchPolicy);
 
-  /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#initialFetchPolicy:member} */
-  initialFetchPolicy?: WatchQueryFetchPolicy;
-
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#refetchWritePolicy:member} */
   refetchWritePolicy?: RefetchWritePolicy;
 
@@ -89,9 +86,6 @@ export interface LazyQueryHookExecOptions<
         currentFetchPolicy: WatchQueryFetchPolicy,
         context: NextFetchPolicyContext<TData, TVariables>
       ) => WatchQueryFetchPolicy);
-
-  /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#initialFetchPolicy:member} */
-  initialFetchPolicy?: WatchQueryFetchPolicy;
 
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#refetchWritePolicy:member} */
   refetchWritePolicy?: RefetchWritePolicy;
