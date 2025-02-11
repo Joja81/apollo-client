@@ -1405,16 +1405,9 @@ describe("useLazyQuery Hook", () => {
       });
     }
 
-    await expect(execute()).resolves.toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: false,
-      networkStatus: NetworkStatus.error,
-      previousData: undefined,
-      error: new ApolloError({ graphQLErrors: [{ message: "error 1" }] }),
-      errors: [{ message: "error 1" }],
-      variables: {},
-    });
+    await expect(execute()).rejects.toEqual(
+      new ApolloError({ graphQLErrors: [{ message: "error 1" }] })
+    );
 
     {
       const [, result] = await takeSnapshot();
@@ -1443,31 +1436,9 @@ describe("useLazyQuery Hook", () => {
       });
     }
 
-    await expect(execute()).resolves.toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: false,
-      networkStatus: NetworkStatus.error,
-      previousData: undefined,
-      error: new ApolloError({ graphQLErrors: [{ message: "error 2" }] }),
-      variables: {},
-    });
-
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        error: new ApolloError({ graphQLErrors: [{ message: "error 1" }] }),
-        // TODO: Why is this only populated when in loading state?
-        errors: [{ message: "error 1" }],
-        variables: {},
-      });
-    }
+    await expect(execute()).rejects.toEqual(
+      new ApolloError({ graphQLErrors: [{ message: "error 2" }] })
+    );
 
     {
       const [, result] = await takeSnapshot();
