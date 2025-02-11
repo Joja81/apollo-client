@@ -1775,7 +1775,14 @@ describe("useLazyQuery Hook", () => {
 
     const [execute] = getCurrentSnapshot();
 
-    const promise = execute();
+    await expect(execute()).resolves.toEqualQueryResult({
+      data: { hello: "Greetings" },
+      called: true,
+      loading: false,
+      networkStatus: NetworkStatus.ready,
+      previousData: undefined,
+      variables: {},
+    });
 
     {
       const [, result] = await takeSnapshot();
@@ -1802,15 +1809,6 @@ describe("useLazyQuery Hook", () => {
         variables: {},
       });
     }
-
-    await expect(promise).resolves.toEqualQueryResult({
-      data: { hello: "Greetings" },
-      called: true,
-      loading: false,
-      networkStatus: NetworkStatus.ready,
-      previousData: undefined,
-      variables: {},
-    });
   });
 
   it("does not refetch when rerendering after executing query", async () => {
