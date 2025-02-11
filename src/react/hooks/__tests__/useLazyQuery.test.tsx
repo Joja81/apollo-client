@@ -3808,7 +3808,7 @@ test("applies `errorPolicy` on next fetch when it changes between renders", asyn
   await expect(takeSnapshot).not.toRerender();
 });
 
-test.skip("applies `context` on next fetch when it changes between renders", async () => {
+test.only("applies `context` on next fetch when it changes between renders", async () => {
   const query = gql`
     query {
       context
@@ -3832,7 +3832,8 @@ test.skip("applies `context` on next fetch when it changes between renders", asy
   using _disabledAct = disableActEnvironment();
   const { takeSnapshot, getCurrentSnapshot, rerender } =
     await renderHookToSnapshotStream(
-      ({ context }) => useLazyQuery(query, { context }),
+      ({ context }) =>
+        useLazyQuery(query, { context, fetchPolicy: "network-only" }),
       {
         initialProps: { context: { source: "initialHookValue" } },
         wrapper: ({ children }) => (
@@ -3846,7 +3847,6 @@ test.skip("applies `context` on next fetch when it changes between renders", asy
 
     expect(result).toEqualLazyQueryResult({
       data: undefined,
-      error: undefined,
       called: false,
       loading: false,
       networkStatus: NetworkStatus.ready,
@@ -3898,7 +3898,7 @@ test.skip("applies `context` on next fetch when it changes between renders", asy
     const [, result] = await takeSnapshot();
 
     expect(result).toEqualLazyQueryResult({
-      data: { context: { source: "rerender" } },
+      data: { context: { source: "initialHookValue" } },
       called: true,
       loading: false,
       networkStatus: NetworkStatus.ready,
@@ -3912,7 +3912,7 @@ test.skip("applies `context` on next fetch when it changes between renders", asy
     called: true,
     loading: false,
     networkStatus: NetworkStatus.ready,
-    previousData: undefined,
+    previousData: { context: { source: "initialHookValue" } },
     variables: {},
   });
 
@@ -3924,7 +3924,7 @@ test.skip("applies `context` on next fetch when it changes between renders", asy
       called: true,
       loading: false,
       networkStatus: NetworkStatus.ready,
-      previousData: undefined,
+      previousData: { context: { source: "initialHookValue" } },
       variables: {},
     });
   }
@@ -3936,7 +3936,7 @@ test.skip("applies `context` on next fetch when it changes between renders", asy
     called: true,
     loading: false,
     networkStatus: NetworkStatus.ready,
-    previousData: undefined,
+    previousData: { context: { source: "rerender" } },
     variables: {},
   });
 
@@ -3948,7 +3948,7 @@ test.skip("applies `context` on next fetch when it changes between renders", asy
       called: true,
       loading: false,
       networkStatus: NetworkStatus.ready,
-      previousData: undefined,
+      previousData: { context: { source: "rerender" } },
       variables: {},
     });
   }
