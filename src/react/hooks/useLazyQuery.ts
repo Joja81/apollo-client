@@ -310,6 +310,7 @@ export function useLazyQuery<
   >(() => bindObservableMethods(observable), [observable]);
 
   const fetchPolicy =
+    options?.fetchPolicy ||
     observable.options.initialFetchPolicy ||
     client.defaultOptions.watchQuery?.fetchPolicy ||
     "cache-first";
