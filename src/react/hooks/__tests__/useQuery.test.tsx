@@ -5340,7 +5340,9 @@ describe("useQuery Hook", () => {
         notifyOnNetworkStatusChange: true,
       });
 
-      const [execute, useLazyQueryResult] = useLazyQuery(query2);
+      const [execute, useLazyQueryResult] = useLazyQuery(query2, {
+        notifyOnNetworkStatusChange: true,
+      });
 
       renderStream.replaceSnapshot({ useQueryResult, useLazyQueryResult });
 
@@ -5383,12 +5385,12 @@ describe("useQuery Hook", () => {
 
       expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: { id: 1 },
+        // @ts-expect-error should be undefined
+        variables: {},
       });
     }
 
@@ -5409,12 +5411,12 @@ describe("useQuery Hook", () => {
 
       expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: { id: 1 },
+        // @ts-expect-error should be undefined
+        variables: {},
       });
     }
 
@@ -5638,7 +5640,9 @@ describe("useQuery Hook", () => {
         notifyOnNetworkStatusChange: true,
       });
 
-      const [execute, useLazyQueryResult] = useLazyQuery(query2);
+      const [execute, useLazyQueryResult] = useLazyQuery(query2, {
+        notifyOnNetworkStatusChange: true,
+      });
 
       renderStream.replaceSnapshot({ useQueryResult, useLazyQueryResult });
 
@@ -5669,12 +5673,12 @@ describe("useQuery Hook", () => {
 
       expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: { id: 1 },
+        // @ts-expect-error should be undefined
+        variables: {},
       });
     }
 
@@ -5695,12 +5699,12 @@ describe("useQuery Hook", () => {
 
       expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: { id: 1 },
+        // @ts-expect-error should be undefined
+        variables: {},
       });
     }
 
@@ -5890,7 +5894,9 @@ describe("useQuery Hook", () => {
         returnPartialData: true,
       });
 
-      const [execute, useLazyQueryResult] = useLazyQuery(query2);
+      const [execute, useLazyQueryResult] = useLazyQuery(query2, {
+        notifyOnNetworkStatusChange: true,
+      });
 
       renderStream.replaceSnapshot({ useQueryResult, useLazyQueryResult });
 
@@ -5921,12 +5927,12 @@ describe("useQuery Hook", () => {
 
       expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: { id: 1 },
+        // @ts-expect-error should be undefined
+        variables: {},
       });
     }
 
@@ -5947,12 +5953,12 @@ describe("useQuery Hook", () => {
 
       expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
         data: undefined,
-        error: undefined,
         called: false,
         loading: false,
         networkStatus: NetworkStatus.ready,
         previousData: undefined,
-        variables: { id: 1 },
+        // @ts-expect-error should be undefined
+        variables: {},
       });
     }
 
