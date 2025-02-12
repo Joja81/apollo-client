@@ -349,7 +349,7 @@ export function useLazyQuery<
     }
 
     return eagerMethods as typeof obsQueryFields;
-  }, [forceUpdateState, obsQueryFields]);
+  }, [obsQueryFields]);
 
   React.useEffect(() => {
     observable.silentSetOptions({
