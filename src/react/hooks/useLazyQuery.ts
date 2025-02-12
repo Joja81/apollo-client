@@ -446,14 +446,7 @@ export function useLazyQuery<
         });
       });
     },
-    [
-      query,
-      eagerMethods,
-      fetchPolicy,
-      observable,
-      stableOptions,
-      renderPromises,
-    ]
+    [query, observable, stableOptions, renderPromises]
   );
 
   const executeRef = React.useRef(execute);
