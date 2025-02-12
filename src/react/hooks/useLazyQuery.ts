@@ -115,11 +115,6 @@ export interface LazyQueryResult<TData, TVariables extends OperationVariables> {
   refetch: (
     variables?: Partial<TVariables>
   ) => Promise<ApolloQueryResult<MaybeMasked<TData>>>;
-  /** @internal */
-  reobserve: (
-    newOptions?: Partial<WatchQueryOptions<TVariables, TData>>,
-    newNetworkStatus?: NetworkStatus
-  ) => Promise<ApolloQueryResult<MaybeMasked<TData>>>;
   /** {@inheritDoc @apollo/client!QueryResultDocumentation#variables:member} */
   variables: TVariables | undefined;
   /** {@inheritDoc @apollo/client!QueryResultDocumentation#fetchMore:member} */
@@ -179,7 +174,6 @@ export type LazyQueryExecFunction<
 // whether the useLazyQuery execute function was called before.
 const EAGER_METHODS = [
   "refetch",
-  "reobserve",
   "fetchMore",
   "updateQuery",
   "startPolling",
