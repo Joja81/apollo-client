@@ -5340,15 +5340,15 @@ describe("useQuery Hook", () => {
         notifyOnNetworkStatusChange: true,
       });
 
-      const [execute, useLazyQueryResult] = useLazyQuery(query2, {
-        variables: { id: 1 },
-      });
+      const [execute, useLazyQueryResult] = useLazyQuery(query2);
 
       renderStream.replaceSnapshot({ useQueryResult, useLazyQueryResult });
 
       return (
         <>
-          <button onClick={() => execute()}>Run 2nd query</button>
+          <button onClick={() => execute({ variables: { id: 1 } })}>
+            Run 2nd query
+          </button>
           <button
             onClick={() => {
               // Intentionally use reobserve here as opposed to refetch to
@@ -5638,13 +5638,15 @@ describe("useQuery Hook", () => {
         notifyOnNetworkStatusChange: true,
       });
 
-      const [execute, useLazyQueryResult] = useLazyQuery(query2, {
-        variables: { id: 1 },
-      });
+      const [execute, useLazyQueryResult] = useLazyQuery(query2);
 
       renderStream.replaceSnapshot({ useQueryResult, useLazyQueryResult });
 
-      return <button onClick={() => execute()}>Run 2nd query</button>;
+      return (
+        <button onClick={() => execute({ variables: { id: 1 } })}>
+          Run 2nd query
+        </button>
+      );
     }
 
     await renderStream.render(<App />, {
@@ -5888,13 +5890,15 @@ describe("useQuery Hook", () => {
         returnPartialData: true,
       });
 
-      const [execute, useLazyQueryResult] = useLazyQuery(query2, {
-        variables: { id: 1 },
-      });
+      const [execute, useLazyQueryResult] = useLazyQuery(query2);
 
       renderStream.replaceSnapshot({ useQueryResult, useLazyQueryResult });
 
-      return <button onClick={() => execute()}>Run 2nd query</button>;
+      return (
+        <button onClick={() => execute({ variables: { id: 1 } })}>
+          Run 2nd query
+        </button>
+      );
     }
 
     await renderStream.render(<App />, {
