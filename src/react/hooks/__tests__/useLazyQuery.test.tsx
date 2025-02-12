@@ -90,20 +90,6 @@ describe("useLazyQuery Hook", () => {
       partial: false,
     });
 
-    // TODO: Determine if this first loading state makes sense without notifyOnNetworkStatusChange
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: {},
-      });
-    }
-
     {
       const [, result] = await takeSnapshot();
 
@@ -138,7 +124,7 @@ describe("useLazyQuery Hook", () => {
   });
 
   // TODO: Should we delete this? This is covered by the first test
-  it("should set `called` to true after calling the lazy execute function", async () => {
+  it.skip("should set `called` to true after calling the lazy execute function", async () => {
     const mocks = [
       {
         request: { query: helloQuery },
@@ -223,18 +209,6 @@ describe("useLazyQuery Hook", () => {
       partial: false,
     });
 
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: { id: 1 },
-      });
-    }
     {
       const [, result] = await takeSnapshot();
 
@@ -385,18 +359,6 @@ describe("useLazyQuery Hook", () => {
       const [, result] = await takeSnapshot();
 
       expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: {},
-      });
-    }
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
         data: { hello: "world" },
         called: true,
         loading: false,
@@ -427,20 +389,6 @@ describe("useLazyQuery Hook", () => {
       networkStatus: NetworkStatus.ready,
       partial: false,
     });
-
-    // TODO: Determine if this additional render makes sense without notifyOnNetworkStatusChange
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: { hello: "world" },
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: { hello: "world" },
-        variables: {},
-      });
-    }
 
     {
       const [, result] = await takeSnapshot();
@@ -645,19 +593,6 @@ describe("useLazyQuery Hook", () => {
       networkStatus: NetworkStatus.ready,
       partial: false,
     });
-
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: {},
-      });
-    }
 
     {
       const [, result] = await takeSnapshot();
@@ -1104,19 +1039,6 @@ describe("useLazyQuery Hook", () => {
       const [, result] = await takeSnapshot();
 
       expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: { id: 1 },
-      });
-    }
-
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
         data: data1,
         called: true,
         loading: false,
@@ -1135,19 +1057,6 @@ describe("useLazyQuery Hook", () => {
       partial: false,
     });
 
-    // TODO: Determine if we should have a render here without notifyOnNetworkStatusChange
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.setVariables,
-        previousData: data1,
-        variables: { id: 2 },
-      });
-    }
     {
       const [, result] = await takeSnapshot();
 
@@ -1844,19 +1753,6 @@ describe("useLazyQuery Hook", () => {
       expect(result).toEqualLazyQueryResult({
         data: undefined,
         called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: {},
-      });
-    }
-
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
         loading: false,
         networkStatus: NetworkStatus.error,
         previousData: undefined,
@@ -2176,19 +2072,6 @@ describe("useLazyQuery Hook", () => {
       networkStatus: NetworkStatus.ready,
       partial: false,
     });
-
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: {},
-      });
-    }
 
     {
       const [, result] = await takeSnapshot();
@@ -2711,18 +2594,6 @@ describe("useLazyQuery Hook", () => {
 
         expect(result).toEqualLazyQueryResult({
           data: undefined,
-          called: true,
-          loading: true,
-          networkStatus: NetworkStatus.loading,
-          previousData: undefined,
-          variables: {},
-        });
-      }
-      {
-        const [, result] = await takeSnapshot();
-
-        expect(result).toEqualLazyQueryResult({
-          data: undefined,
           error: new ApolloError({ networkError }),
           called: true,
           loading: false,
@@ -2786,18 +2657,6 @@ describe("useLazyQuery Hook", () => {
         new ApolloError({ networkError })
       );
 
-      {
-        const [, result] = await takeSnapshot();
-
-        expect(result).toEqualLazyQueryResult({
-          data: undefined,
-          called: true,
-          loading: true,
-          networkStatus: NetworkStatus.loading,
-          previousData: undefined,
-          variables: {},
-        });
-      }
       {
         const [, result] = await takeSnapshot();
 
@@ -2871,18 +2730,6 @@ describe("useLazyQuery Hook", () => {
 
         expect(result).toEqualLazyQueryResult({
           data: undefined,
-          called: true,
-          loading: true,
-          networkStatus: NetworkStatus.loading,
-          previousData: undefined,
-          variables: {},
-        });
-      }
-      {
-        const [, result] = await takeSnapshot();
-
-        expect(result).toEqualLazyQueryResult({
-          data: undefined,
           error: new ApolloError({ networkError }),
           called: true,
           loading: false,
@@ -2930,19 +2777,6 @@ describe("useLazyQuery Hook", () => {
 
     const promise = execute();
     expect(requests).toBe(1);
-
-    {
-      const [, result] = await takeSnapshot();
-
-      expect(result).toEqualLazyQueryResult({
-        data: undefined,
-        called: true,
-        loading: true,
-        networkStatus: NetworkStatus.loading,
-        previousData: undefined,
-        variables: {},
-      });
-    }
 
     await client.clearStore();
 
@@ -3054,9 +2888,6 @@ describe("useLazyQuery Hook", () => {
         partial: false,
       });
 
-      // Loading
-      await takeSnapshot();
-
       {
         const [, result] = await takeSnapshot();
 
@@ -3160,9 +2991,6 @@ describe("useLazyQuery Hook", () => {
         networkStatus: NetworkStatus.ready,
         partial: false,
       });
-
-      // Loading
-      await takeSnapshot();
 
       {
         const [, result] = await takeSnapshot();
@@ -3268,9 +3096,6 @@ describe("useLazyQuery Hook", () => {
         partial: false,
       });
 
-      // Loading
-      await takeSnapshot();
-
       {
         const [, result] = await takeSnapshot();
 
@@ -3358,9 +3183,6 @@ describe("useLazyQuery Hook", () => {
 
       const [execute] = getCurrentSnapshot();
       await execute();
-
-      // Loading
-      await takeSnapshot();
 
       {
         const [, result] = await takeSnapshot();
@@ -3482,9 +3304,6 @@ describe("useLazyQuery Hook", () => {
       const [execute] = getCurrentSnapshot();
       await execute();
 
-      // Loading
-      await takeSnapshot();
-
       {
         const [, result] = await takeSnapshot();
 
@@ -3598,19 +3417,6 @@ test("uses the updated client when executing the function after changing clients
     const [, result] = await takeSnapshot();
 
     expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: {},
-    });
-  }
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
       data: { greeting: "Hello client 1" },
       called: true,
       loading: false,
@@ -3641,20 +3447,6 @@ test("uses the updated client when executing the function after changing clients
     networkStatus: NetworkStatus.ready,
     partial: false,
   });
-
-  // TODO: Determine if we want this render without notifyOnNetworkStatusChange
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: { greeting: "Hello client 1" },
-      variables: {},
-    });
-  }
 
   {
     const [, result] = await takeSnapshot();
@@ -3717,19 +3509,6 @@ test("responds to cache updates after executing query", async () => {
     networkStatus: NetworkStatus.ready,
     partial: false,
   });
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: {},
-    });
-  }
 
   {
     const [, result] = await takeSnapshot();
@@ -3818,19 +3597,6 @@ test("responds to cache updates after changing variables", async () => {
     const [, result] = await takeSnapshot();
 
     expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: { id: "1" },
-    });
-  }
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
       data: {
         character: { __typename: "Character", id: "1", name: "Spider-Man" },
       },
@@ -3852,21 +3618,6 @@ test("responds to cache updates after changing variables", async () => {
     networkStatus: NetworkStatus.ready,
     partial: false,
   });
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.setVariables,
-      previousData: {
-        character: { __typename: "Character", id: "1", name: "Spider-Man" },
-      },
-      variables: { id: "2" },
-    });
-  }
 
   {
     const [, result] = await takeSnapshot();
@@ -4139,20 +3890,6 @@ test("applies `errorPolicy` on next fetch when it changes between renders", asyn
     partial: false,
   });
 
-  // TODO: Determine if we want this extra render without notifyOnNetworkStatusChange
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: { id: "1" },
-    });
-  }
-
   {
     const [, result] = await takeSnapshot();
 
@@ -4268,19 +4005,6 @@ test("applies `context` on next fetch when it changes between renders", async ()
     networkStatus: NetworkStatus.ready,
     partial: false,
   });
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: {},
-    });
-  }
 
   {
     const [, result] = await takeSnapshot();
@@ -4477,19 +4201,6 @@ test("applies `refetchWritePolicy` on next fetch when it changes between renders
     const [, result] = await takeSnapshot();
 
     expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: { min: 0, max: 12 },
-    });
-  }
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
       data: mocks[0].result.data,
       called: true,
       loading: false,
@@ -4669,19 +4380,6 @@ test("applies `returnPartialData` on next fetch when it changes between renders"
     networkStatus: NetworkStatus.ready,
     partial: false,
   });
-
-  {
-    const [, result] = await takeSnapshot();
-
-    expect(result).toEqualLazyQueryResult({
-      data: undefined,
-      called: true,
-      loading: true,
-      networkStatus: NetworkStatus.loading,
-      previousData: undefined,
-      variables: { id: "1" },
-    });
-  }
 
   {
     const [, result] = await takeSnapshot();
