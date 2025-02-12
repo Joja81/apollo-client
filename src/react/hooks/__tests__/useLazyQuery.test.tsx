@@ -3323,7 +3323,6 @@ test.todo(
 test.todo(
   "throws when calling `updateQuery` before execute function is called"
 );
-test.todo("throws when calling `reobserve` before execute function is called");
 
 test("uses the updated client when executing the function after changing clients", async () => {
   const { query } = setupSimpleCase();
