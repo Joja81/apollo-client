@@ -27,6 +27,8 @@ import { useApolloClient } from "./useApolloClient.js";
 import { useSyncExternalStore } from "./useSyncExternalStore.js";
 import equal from "@wry/equality";
 import { useDeepMemo } from "./internal/useDeepMemo.js";
+import { useRenderGuard } from "./internal/index.js";
+import { invariant } from "../../utilities/globals/index.js";
 
 const {
   prototype: { hasOwnProperty },
@@ -231,6 +233,7 @@ export function useLazyQuery<
   const previousDataRef = React.useRef<TData>(undefined);
   const resultRef = React.useRef<ApolloQueryResult<TData>>(undefined);
   const stableOptions = useDeepMemo(() => options, [options]);
+  const calledDuringRender = useRenderGuard();
 
   function createObservable() {
     return client.watchQuery({
@@ -373,7 +376,12 @@ export function useLazyQuery<
   );
 
   const execute = React.useCallback<LazyQueryExecFunction<TData, TVariables>>(
-    async (executeOptions) => {
+    (executeOptions) => {
+      invariant(
+        !calledDuringRender(),
+        "useLazyQuery: 'execute' should not be called during render. To start a query during render, use the 'useQuery' hook."
+      );
+
       const options: WatchQueryOptions<TVariables, TData> = {
         ...executeOptions,
         // TODO: Figure out a better way to reset variables back to empty
@@ -412,7 +420,14 @@ export function useLazyQuery<
         });
       });
     },
-    [query, observable, stableOptions, forceUpdateState, updateResult]
+    [
+      query,
+      observable,
+      stableOptions,
+      forceUpdateState,
+      updateResult,
+      calledDuringRender,
+    ]
   );
 
   const executeRef = React.useRef(execute);

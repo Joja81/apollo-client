@@ -1,7 +1,7 @@
 import React from "react";
 import { GraphQLError } from "graphql";
 import gql from "graphql-tag";
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor, screen } from "@testing-library/react";
 
 import {
   ApolloClient,
@@ -34,10 +34,16 @@ import {
 } from "@testing-library/react-render-stream";
 import { MockedProvider } from "../../../testing/react";
 import {
+  renderAsync,
   setupSimpleCase,
   setupVariablesCase,
+  spyOnConsole,
   VariablesCaseVariables,
 } from "../../../testing/internal";
+import userEvent from "@testing-library/user-event";
+import { ErrorBoundary } from "react-error-boundary";
+
+const IS_REACT_19 = React.version.startsWith("19");
 
 describe("useLazyQuery Hook", () => {
   const helloQuery: TypedDocumentNode<{
@@ -3323,6 +3329,73 @@ test.todo(
 test.todo(
   "throws when calling `updateQuery` before execute function is called"
 );
+test.todo("throws when calling `reobserve` before execute function is called");
+
+test("throws when calling execute function during first render", async () => {
+  // We don't provide this functionality with React 19 anymore since it requires internals access
+  if (IS_REACT_19) return;
+  using _consoleSpy = spyOnConsole("error");
+  const { query, mocks } = setupSimpleCase();
+
+  function App() {
+    const [execute] = useLazyQuery(query);
+
+    void execute();
+
+    return null;
+  }
+
+  // We need to use the `async` function here to prevent console errors from
+  // showing up
+  await expect(async () =>
+    renderAsync(<App />, {
+      wrapper: ({ children }) => (
+        <MockedProvider mocks={mocks}>{children}</MockedProvider>
+      ),
+    })
+  ).rejects.toThrow(
+    new InvariantError(
+      "useLazyQuery: 'execute' should not be called during render. To start a query during render, use the 'useQuery' hook."
+    )
+  );
+});
+
+test("throws when calling execute function during subsequent render", async () => {
+  // We don't provide this functionality with React 19 anymore since it requires internals access
+  if (IS_REACT_19) return;
+  using _consoleSpy = spyOnConsole("error");
+  const { query, mocks } = setupSimpleCase();
+  const user = userEvent.setup();
+
+  function App() {
+    const [count, setCount] = React.useState(0);
+    const [execute] = useLazyQuery(query);
+
+    if (count === 1) {
+      void execute();
+    }
+
+    return <button onClick={() => setCount(1)}>Load</button>;
+  }
+
+  let error!: Error;
+
+  await renderAsync(<App />, {
+    wrapper: ({ children }) => (
+      <ErrorBoundary onError={(e) => (error = e)} fallback={<div>Oops</div>}>
+        <MockedProvider mocks={mocks}>{children}</MockedProvider>
+      </ErrorBoundary>
+    ),
+  });
+
+  await act(() => user.click(screen.getByText("Load")));
+
+  expect(error).toEqual(
+    new InvariantError(
+      "useLazyQuery: 'execute' should not be called during render. To start a query during render, use the 'useQuery' hook."
+    )
+  );
+});
 
 test("uses the updated client when executing the function after changing clients", async () => {
   const { query } = setupSimpleCase();
