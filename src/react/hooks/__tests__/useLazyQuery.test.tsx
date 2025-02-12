@@ -4000,7 +4000,7 @@ test("applies `errorPolicy` on next fetch when it changes between renders", asyn
   }
 
   const [, { refetch }] = getCurrentSnapshot();
-  refetch();
+  void refetch();
 
   {
     const [, result] = await takeSnapshot();

@@ -2,7 +2,7 @@ import type { DocumentNode, GraphQLFormattedError } from "graphql";
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import * as React from "rehackt";
 
-import { ApolloError, NetworkStatus } from "../../core/index.js";
+import { NetworkStatus } from "../../core/index.js";
 import type {
   ApolloClient,
   ApolloQueryResult,
@@ -17,11 +17,12 @@ import type {
   Unmasked,
   WatchQueryFetchPolicy,
   WatchQueryOptions,
+  ApolloError,
 } from "../../core/index.js";
 import { maybeDeepFreeze } from "../../utilities/index.js";
 import type { NoInfer, ObservableQueryFields } from "../types/types.js";
 import { useIsomorphicLayoutEffect } from "./internal/useIsomorphicLayoutEffect.js";
-import { NextFetchPolicyContext } from "../../core/watchQueryOptions.js";
+import type { NextFetchPolicyContext } from "../../core/watchQueryOptions.js";
 import { useApolloClient } from "./useApolloClient.js";
 import { useSyncExternalStore } from "./useSyncExternalStore.js";
 import equal from "@wry/equality";
@@ -274,20 +275,21 @@ export function useLazyQuery<
     setObservable(createObservable());
   }
 
-  function updateResult(
-    result: ApolloQueryResult<TData>,
-    forceUpdate: () => void
-  ) {
-    const previousData = resultRef.current?.data;
+  const updateResult = React.useCallback(
+    (result: ApolloQueryResult<TData>, forceUpdate: () => void) => {
+      const previousData = resultRef.current?.data;
 
-    if (previousData && !equal(previousData, result.data)) {
-      previousDataRef.current = previousData;
-    }
+      if (previousData && !equal(previousData, result.data)) {
+        // eslint-disable-next-line react-compiler/react-compiler
+        previousDataRef.current = previousData;
+      }
 
-    resultRef.current = result;
+      resultRef.current = result;
 
-    forceUpdate();
-  }
+      forceUpdate();
+    },
+    []
+  );
 
   const observableResult = useSyncExternalStore(
     React.useCallback(
@@ -338,17 +340,11 @@ export function useLazyQuery<
           subscription.current.unsubscribe();
         };
       },
-      [observable]
+      [observable, updateResult]
     ),
     () => resultRef.current || initialResult,
     () => resultRef.current || initialResult
   );
-
-  const fetchPolicy =
-    options?.fetchPolicy ||
-    observable.options.initialFetchPolicy ||
-    client.defaultOptions.watchQuery?.fetchPolicy ||
-    "cache-first";
 
   const forceUpdateState = React.useReducer((tick) => tick + 1, 0)[1];
   // We use useMemo here to make sure the eager methods have a stable identity.
@@ -446,7 +442,14 @@ export function useLazyQuery<
         });
       });
     },
-    [query, observable, stableOptions, renderPromises]
+    [
+      query,
+      observable,
+      stableOptions,
+      renderPromises,
+      forceUpdateState,
+      updateResult,
+    ]
   );
 
   const executeRef = React.useRef(execute);
