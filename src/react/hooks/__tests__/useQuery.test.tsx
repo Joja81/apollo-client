@@ -30,7 +30,7 @@ import { QueryResult } from "../../types/types";
 import { useQuery } from "../useQuery";
 import { useMutation } from "../useMutation";
 import { setupPaginatedCase, spyOnConsole } from "../../../testing/internal";
-import { useLazyQuery } from "../useLazyQuery";
+import { LazyQueryResult, useLazyQuery } from "../useLazyQuery";
 import { mockFetchQuery } from "../../../core/__tests__/ObservableQuery";
 import { InvariantError } from "../../../utilities/globals";
 import { Unmasked } from "../../../masking";
@@ -5307,7 +5307,7 @@ describe("useQuery Hook", () => {
     const renderStream = createRenderStream({
       initialSnapshot: {
         useQueryResult: null as QueryResult<Query1, Variables> | null,
-        useLazyQueryResult: null as QueryResult<Query2, Variables> | null,
+        useLazyQueryResult: null as LazyQueryResult<Query2, Variables> | null,
       },
     });
 
@@ -5383,7 +5383,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: false,
         loading: false,
@@ -5409,7 +5409,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: false,
         loading: false,
@@ -5437,7 +5437,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: true,
         loading: true,
@@ -5477,7 +5477,7 @@ describe("useQuery Hook", () => {
         partial: true,
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: { person: { __typename: "Person", id: 1, lastName: "Doe" } },
         called: true,
         loading: false,
@@ -5501,7 +5501,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: { person: { __typename: "Person", id: 1, lastName: "Doe" } },
         called: true,
         loading: false,
@@ -5541,7 +5541,7 @@ describe("useQuery Hook", () => {
         partial: true,
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: { person: { __typename: "Person", id: 1, lastName: "Doe" } },
         called: true,
         loading: false,
@@ -5601,7 +5601,7 @@ describe("useQuery Hook", () => {
     const renderStream = createRenderStream({
       initialSnapshot: {
         useQueryResult: null as QueryResult<Query1, Variables> | null,
-        useLazyQueryResult: null as QueryResult<Query2, Variables> | null,
+        useLazyQueryResult: null as LazyQueryResult<Query2, Variables> | null,
       },
     });
 
@@ -5671,7 +5671,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: false,
         loading: false,
@@ -5697,7 +5697,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: false,
         loading: false,
@@ -5725,7 +5725,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: true,
         loading: true,
@@ -5753,7 +5753,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: {
           person: {
             __typename: "Person",
@@ -5788,7 +5788,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: {
           person: {
             __typename: "Person",
@@ -5855,7 +5855,7 @@ describe("useQuery Hook", () => {
     const renderStream = createRenderStream({
       initialSnapshot: {
         useQueryResult: null as QueryResult<Query1, Variables> | null,
-        useLazyQueryResult: null as QueryResult<Query2, Variables> | null,
+        useLazyQueryResult: null as LazyQueryResult<Query2, Variables> | null,
       },
     });
 
@@ -5925,7 +5925,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: false,
         loading: false,
@@ -5951,7 +5951,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: false,
         loading: false,
@@ -5979,7 +5979,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: undefined,
         called: true,
         loading: true,
@@ -6004,7 +6004,7 @@ describe("useQuery Hook", () => {
         variables: { id: 1 },
       });
 
-      expect(snapshot.useLazyQueryResult!).toEqualQueryResult({
+      expect(snapshot.useLazyQueryResult!).toEqualLazyQueryResult({
         data: {
           person: {
             __typename: "Person",
