@@ -18,8 +18,13 @@ import type {
   WatchQueryOptions,
   ApolloError,
 } from "../../core/index.js";
+import type { OnlyRequiredProperties } from "../../utilities/index.js";
 import { maybeDeepFreeze } from "../../utilities/index.js";
-import type { NoInfer, ObservableQueryFields } from "../types/types.js";
+import type {
+  NoInfer,
+  ObservableQueryFields,
+  VariablesOption,
+} from "../types/types.js";
 import { useIsomorphicLayoutEffect } from "./internal/useIsomorphicLayoutEffect.js";
 import type {
   NextFetchPolicyContext,
@@ -81,15 +86,12 @@ export interface LazyQueryHookOptions<
   context?: DefaultContext;
 }
 
-export interface LazyQueryHookExecOptions<
+export type LazyQueryHookExecOptions<
   TVariables extends OperationVariables = OperationVariables,
-> {
-  /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#variables:member} */
-  variables?: TVariables;
-
+> = {
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#context:member} */
   context?: DefaultContext;
-}
+} & VariablesOption<TVariables>;
 
 export interface LazyQueryResult<TData, TVariables extends OperationVariables> {
   /** {@inheritDoc @apollo/client!QueryResultDocumentation#startPolling:member} */
@@ -156,7 +158,11 @@ export type LazyQueryExecFunction<
   TData,
   TVariables extends OperationVariables,
 > = (
-  options?: LazyQueryHookExecOptions<TVariables>
+  ...args: [TVariables] extends [never] ?
+    [options?: LazyQueryHookExecOptions<TVariables>]
+  : Record<string, never> extends OnlyRequiredProperties<TVariables> ?
+    [options?: LazyQueryHookExecOptions<TVariables>]
+  : [options: LazyQueryHookExecOptions<TVariables>]
 ) => Promise<ApolloQueryResult<TData>>;
 
 // The following methods, when called will execute the query, regardless of
