@@ -13,7 +13,6 @@ import type {
   ObservableQuery,
   OperationVariables,
   RefetchWritePolicy,
-  SubscribeToMoreOptions,
   Unmasked,
   WatchQueryFetchPolicy,
   WatchQueryOptions,
@@ -22,7 +21,10 @@ import type {
 import { maybeDeepFreeze } from "../../utilities/index.js";
 import type { NoInfer, ObservableQueryFields } from "../types/types.js";
 import { useIsomorphicLayoutEffect } from "./internal/useIsomorphicLayoutEffect.js";
-import type { NextFetchPolicyContext } from "../../core/watchQueryOptions.js";
+import type {
+  NextFetchPolicyContext,
+  SubscribeToMoreFunction,
+} from "../../core/watchQueryOptions.js";
 import { useApolloClient } from "./useApolloClient.js";
 import { useSyncExternalStore } from "./useSyncExternalStore.js";
 import equal from "@wry/equality";
@@ -94,16 +96,7 @@ export interface LazyQueryResult<TData, TVariables extends OperationVariables> {
   /** {@inheritDoc @apollo/client!QueryResultDocumentation#stopPolling:member} */
   stopPolling: () => void;
   /** {@inheritDoc @apollo/client!QueryResultDocumentation#subscribeToMore:member} */
-  subscribeToMore: <
-    TSubscriptionData = TData,
-    TSubscriptionVariables extends OperationVariables = TVariables,
-  >(
-    options: SubscribeToMoreOptions<
-      TData,
-      TSubscriptionVariables,
-      TSubscriptionData
-    >
-  ) => () => void;
+  subscribeToMore: SubscribeToMoreFunction<TData, TVariables>;
   /** {@inheritDoc @apollo/client!QueryResultDocumentation#updateQuery:member} */
   updateQuery: <TVars extends OperationVariables = TVariables>(
     mapFn: (
