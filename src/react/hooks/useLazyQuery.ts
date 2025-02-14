@@ -308,7 +308,7 @@ export function useLazyQuery<
       [observable, updateResult]
     ),
     () => resultRef.current || initialResult,
-    () => resultRef.current || initialResult
+    () => initialResult
   );
 
   const forceUpdateState = React.useReducer((tick) => tick + 1, 0)[1];
