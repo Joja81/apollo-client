@@ -38,10 +38,6 @@ import { useDeepMemo } from "./internal/useDeepMemo.js";
 import { useRenderGuard } from "./internal/index.js";
 import { invariant } from "../../utilities/globals/index.js";
 
-const {
-  prototype: { hasOwnProperty },
-} = Object;
-
 export interface LazyQueryHookOptions<
   TData = any,
   TVariables extends OperationVariables = OperationVariables,
@@ -277,7 +273,7 @@ export function useLazyQuery<
           );
 
           // TODO: Determine if this is still needed.
-          if (!hasOwnProperty.call(error, "graphQLErrors")) {
+          if (!Object.prototype.hasOwnProperty.call(error, "graphQLErrors")) {
             // The error is not a GraphQL error
             throw error;
           }
