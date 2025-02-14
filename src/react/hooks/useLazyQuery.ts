@@ -424,7 +424,6 @@ export function useLazyQuery<
       });
     },
     [
-      query,
       observable,
       stableOptions,
       forceUpdateState,
