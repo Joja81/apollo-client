@@ -1,5 +1,5 @@
 import { Trie } from "@wry/trie";
-import { canUseWeakMap, canUseWeakSet } from "../common/canUse.js";
+import { canUseWeakSet } from "../common/canUse.js";
 import { checkDocument } from "./getFromAST.js";
 import { invariant } from "../globals/index.js";
 import type { DocumentNode } from "graphql";
@@ -98,7 +98,7 @@ export class DocumentTransform {
    */
   resetCache() {
     if (this.cached) {
-      const stableCacheKeys = new Trie<WeakKey>(canUseWeakMap);
+      const stableCacheKeys = new Trie<WeakKey>();
       this.performWork = wrap(
         DocumentTransform.prototype.performWork.bind(this),
         {

@@ -1,8 +1,8 @@
 import { Slot } from "optimism";
 import { invariant } from "../utilities/globals/index.js";
-import { canUseWeakMap, canUseWeakSet } from "../utilities/index.js";
+import { canUseWeakSet } from "../utilities/index.js";
 
-export const MapImpl = canUseWeakMap ? WeakMap : Map;
+export const MapImpl = WeakMap;
 export const SetImpl = canUseWeakSet ? WeakSet : Set;
 
 // Contextual slot that allows us to disable accessor warnings on fields when in
