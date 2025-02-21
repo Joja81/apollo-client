@@ -1,8 +1,5 @@
 import { Trie } from "@wry/trie";
-import {
-  canUseWeakSet,
-  isNonNullObject as isObjectOrArray,
-} from "../../utilities/index.js";
+import { isNonNullObject as isObjectOrArray } from "../../utilities/index.js";
 import { isArray } from "./helpers.js";
 
 function shallowCopy<T>(value: T): T {
@@ -72,7 +69,7 @@ function shallowCopy<T>(value: T): T {
 export class ObjectCanon {
   // Set of all canonical objects this ObjectCanon has admitted, allowing
   // canon.admit to return previously-canonicalized objects immediately.
-  private known = new (canUseWeakSet ? WeakSet : Set)<object>();
+  private known = new WeakSet<object>();
 
   // Efficient storage/lookup structure for canonical objects.
   private pool = new Trie<{
